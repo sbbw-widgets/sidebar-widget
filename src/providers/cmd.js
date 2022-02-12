@@ -1,8 +1,22 @@
 const exec = ({ file, args }) => {
     return new Promise((resolve, reject) => {
-        window.rpc
-            .call('exec', { file, args })
-            .then(resolve)
+        fetch("sbbw://exec", {
+            mode: 'cors',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin': window.location.origin,
+            },
+            method: 'POST',
+            body: JSON.stringify({ file, args })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.status == 200)
+                    resolve(data.data)
+                else
+                    reject(data)
+            })
             .catch(reject)
     });
 }
@@ -10,9 +24,9 @@ const exec = ({ file, args }) => {
 const getBrightness = () => {
     return new Promise((resolve, reject) => {
         exec('brightnessctl', ['get'])
-        .then(b =>
-            resolve(parseInt(b.trim()))
-        ).catch(reject)
+            .then(b =>
+                resolve(parseInt(b.trim()))
+            ).catch(reject)
     });
 }
 
@@ -44,8 +58,8 @@ const setBrightness = (brightness) => {
             file: 'brightnessctl',
             args: ['set', brightness]
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -55,8 +69,8 @@ const setVolume = (volume) => {
             file: './volume',
             args: ['set', volume]
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -66,8 +80,8 @@ const getBattery = () => {
             file: 'python',
             args: ['./os_mod.py', 'bat', 'get']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -77,8 +91,8 @@ const getBatteryStatus = () => {
             file: 'python',
             args: ['./os_mod.py', 'bat']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -89,8 +103,8 @@ const getNetworkSSID = () => {
             file: 'python',
             args: ['./os_mod.py', 'net', 'get']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -100,8 +114,8 @@ const setShutdownDevice = () => {
             file: 'python',
             args: ['./power.py', 'poweroff']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -111,8 +125,8 @@ const setRebootDevice = () => {
             file: 'python',
             args: ['./power.py', 'reboot']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -122,8 +136,8 @@ const setSuspendDevice = () => {
             file: 'python',
             args: ['./power.py', 'suspend']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 
@@ -133,8 +147,8 @@ const setLookScreenDevice = () => {
             file: 'python',
             args: ['./power.py', 'look']
         })
-        .then(resolve)
-        .catch(reject)
+            .then(resolve)
+            .catch(reject)
     });
 }
 

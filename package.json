@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "vite-plugin-cross-origin-isolation": "^0.1.6"
   }
 }

@@ -24,10 +24,10 @@ const globalStyle = {
 const light = extendTheme({
     colors: {
         background: "#f5f5f5",
-        text: "#505050",
-        primary: "",
-        secondary: "",
-        highlight: "",
+        text: "#404040",
+        primary: "#eaeaea",
+        secondary: "#eaeaee",
+        highlight: "#606060",
         warning: "#EBCB8B",
         success: "#A3BE8C",
         danger: "#BF616A",
