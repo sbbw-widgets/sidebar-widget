@@ -1,7 +1,7 @@
 #
 #
 #   author: @SergioRibera
-#   date:   2020-05-06
+#   date:   2022-10-01
 #   desc:   This script is a simple example of how overwrite the config.toml to set position to half of the screen
 #   requirements: python3, xrandr (linux only), playerctl (linux only)
 #
@@ -29,7 +29,7 @@ with open('../config.toml') as f:
         if line.startswith('y'):
             height, width = get_primary_monitor_size()
             # replace the value of the "y" parameter
-            toWrite += f"y = \"{str(-((height / 2) + 50))}\" \n"
+            toWrite += f"y = {str(-((height / 2) + 50))}\n"
         else:
             # if is another parameter, just add it
             toWrite += line
