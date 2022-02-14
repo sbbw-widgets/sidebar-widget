@@ -1,0 +1,16 @@
+name = "sidebar"
+class_name = "class_name"
+transparent = true
+alwaysontop = true
+stick = true
+blur = false
+width = "400.0"
+height = "mAx"
+x = 0.1
+y = "-850.0" 
+
+autostart = [
+    { cmd = "python", args = [ "-m", "ensurepip", "--upgrade" ] },
+    { cmd = "python", args = [ "-m", "pip", "install", "-r", "requirements.txt" ] },
+    { cmd = "python", args = [ "main.py" ] },
+]

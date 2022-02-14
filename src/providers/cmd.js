@@ -1,18 +1,9 @@
 const exec = ({ file, args }) => {
     return new Promise((resolve, reject) => {
-        fetch("sbbw://exec", {
-            mode: 'cors',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-                'Access-Control-Allow-Origin': window.location.origin,
-            },
-            method: 'POST',
-            body: JSON.stringify({ file, args })
-        })
-            .then(res => res.json())
+        executeCommand(file, args)
             .then(data => {
                 console.log(data)
-                if (data.status == 200)
+                if (data.code == 200)
                     resolve(data.data)
                 else
                     reject(data)
