@@ -6,7 +6,9 @@ const Network = () => {
         <HStack spacing={4}>
             <Icon as={MdNetworkWifi} color='text' />
             <VStack spacing={0}>
-                <Text color="text" fontWeight="bold">El WIFI</Text>
+                <Text color='text' fontWeight='bold'>
+                    El WIFI
+                </Text>
             </VStack>
         </HStack>
     )

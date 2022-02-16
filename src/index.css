@@ -1,20 +1,32 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .media_name_animated {
     animation: backAndForth 7s ease-in-out infinite;
 }
 @keyframes backAndForth {
-    0% { transform: translateX(20%); }
-    10% { transform: translateX(20%); }
-    35% { transform: translateX(calc(-20%)); }
-    65% { transform: translateX(calc(-20%)); }
-    90% { transform: translateX(20%); }
-    100% { transform: translateX(20%); }
+    0% {
+        transform: translateX(20%);
+    }
+    10% {
+        transform: translateX(20%);
+    }
+    35% {
+        transform: translateX(calc(-20%));
+    }
+    65% {
+        transform: translateX(calc(-20%));
+    }
+    90% {
+        transform: translateX(20%);
+    }
+    100% {
+        transform: translateX(20%);
+    }
 }

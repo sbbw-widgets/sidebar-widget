@@ -1,11 +1,5 @@
 {
-    "compilerOptions": { },
-    "exclude": [
-        "node_modules",
-        "build",
-        "dev"
-    ],
-    "include": [
-        "src"
-    ]
+    "compilerOptions": {},
+    "exclude": ["node_modules", "build", "dev"],
+    "include": ["src"]
 }

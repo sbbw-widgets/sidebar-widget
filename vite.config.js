@@ -9,7 +9,7 @@ export default defineConfig({
     },
     server: {
         watch: {
-            usePolling: true
+            usePolling: true,
         },
         cors: {
             origin: '*',
@@ -17,7 +17,5 @@ export default defineConfig({
         },
     },
     base: '/sidebar/ui/',
-    plugins: [
-        react(),
-    ]
+    plugins: [react()],
 })
