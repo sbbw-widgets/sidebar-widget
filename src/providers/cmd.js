@@ -1,10 +1,20 @@
 const exec = ({ file, args }) => {
     return new Promise((resolve, reject) => {
-        executeCommand(file, args)
+        window.rpc
+            .call(file, args)
             .then((data) => {
-                console.log(data)
-                if (data.code == 200) resolve(data.data)
-                else reject(data)
+                if (typeof data === 'string') {
+                    data = data.trim()
+                    if (
+                        !data.toLowerCase().trim().includes('invalid') ||
+                        !data.toLowerCase().trim().includes('unsupported')
+                    )
+                        resolve(data)
+                    else reject(data)
+                } else {
+                    if (data.code == 200) resolve(data.data)
+                    else reject(data)
+                }
             })
             .catch(reject)
     })
@@ -12,19 +22,11 @@ const exec = ({ file, args }) => {
 
 const getBrightness = () => {
     return new Promise((resolve, reject) => {
-        exec('brightnessctl', ['get'])
-            .then((b) => resolve(parseInt(b.trim())))
-            .catch(reject)
-    })
-}
-
-const getMaxBrightness = () => {
-    return new Promise((resolve, reject) => {
         exec({
-            file: 'brightnessctl',
-            args: ['max'],
+            file: 'python',
+            args: ['./brightness.py', 'get'],
         })
-            .then((b) => resolve(parseInt(b.trim())))
+            .then(resolve)
             .catch(reject)
     })
 }
@@ -35,7 +37,40 @@ const getVolume = () => {
             file: './volume',
             args: ['get'],
         })
-            .then((b) => resolve(parseInt(b.trim())))
+            .then(resolve)
+            .catch(reject)
+    })
+}
+
+const getMediaStatus = () => {
+    return new Promise((resolve, reject) => {
+        exec({
+            file: 'python',
+            args: ['./mediactl.py', 'status'],
+        })
+            .then(resolve)
+            .catch(reject)
+    })
+}
+
+const getMediaMetadata = () => {
+    return new Promise((resolve, reject) => {
+        exec({
+            file: 'python',
+            args: ['./mediactl.py', 'metadata'],
+        })
+            .then(resolve)
+            .catch(reject)
+    })
+}
+
+const setMedia = (cmd) => {
+    return new Promise((resolve, reject) => {
+        exec({
+            file: 'python',
+            args: ['./mediactl.py', cmd],
+        })
+            .then(resolve)
             .catch(reject)
     })
 }
@@ -43,8 +78,8 @@ const getVolume = () => {
 const setBrightness = (brightness) => {
     return new Promise((resolve, reject) => {
         exec({
-            file: 'brightnessctl',
-            args: ['set', brightness],
+            file: 'python',
+            args: ['./brightness.py', 'set', `${brightness}`],
         })
             .then(resolve)
             .catch(reject)
@@ -55,7 +90,7 @@ const setVolume = (volume) => {
     return new Promise((resolve, reject) => {
         exec({
             file: './volume',
-            args: ['set', volume],
+            args: ['set', `${volume}`],
         })
             .then(resolve)
             .catch(reject)
@@ -143,9 +178,11 @@ const setLookScreenDevice = () => {
 export {
     getVolume,
     getBrightness,
-    getMaxBrightness,
     setBrightness,
     setVolume,
+    getMediaStatus,
+    getMediaMetadata,
+    setMedia,
     getBattery,
     getBatteryStatus,
     getNetworkSSID,

@@ -24,10 +24,11 @@ const Battery = () => {
     const [batteryCharging, setBatteryCharging] = useState('charging')
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const checkStatus = () => {
             getBattery()
                 .then((level) => {
-                    if (!level.toLowerCase().trim().includes('not found')) {
+                    if (level !== null) {
+                        level = level.match(/\d+/)[0]
                         setBatteryLevel(parseInt(level))
                         setIsBattery(true)
                     }
@@ -37,17 +38,19 @@ const Battery = () => {
                     setIsBattery(false)
                 })
 
-            getBatteryStatus()
-                .then((status) => {
-                    if (!status.toLowerCase().trim().includes('not found')) {
+            if (isBattery) {
+                getBatteryStatus()
+                    .then((status) => {
                         setBatteryCharging(new Boolean(status.trim()).valueOf())
-                    }
-                })
-                .catch((err) => {
-                    console.log(err)
-                    setBatteryCharging(false)
-                })
-        }, 10000)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setBatteryCharging(false)
+                    })
+            }
+        }
+        const interval = setInterval(checkStatus, 10000)
+        checkStatus()
 
         return () => clearInterval(interval)
     }, [])

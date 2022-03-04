@@ -23,6 +23,8 @@ else:
             subprocess.call(["playerctl", "status"])
         elif command == "toggle":
             subprocess.call(["playerctl", "play-pause"])
+        elif command == "metadata":
+            subprocess.call(["playerctl", "metadata"])
         elif command == "set":
             if len(args) >= 2:
                 subprocess.call(["playerctl", "metadata", "set", args[1]])

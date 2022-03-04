@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ "$1" = "get" ]; then
+    amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%'
+elif [ "$1" = "set" ]; then
+    amixer set Master "$2"%
+fi

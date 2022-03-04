@@ -1,4 +1,4 @@
-import React, { Fragment, StrictMode, useState } from 'react'
+import React, { Fragment, StrictMode, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import {
@@ -25,8 +25,58 @@ import { BsBrightnessHigh, BsSoundwave } from 'react-icons/bs'
 import Battery from './components/battery'
 import Network from './components/network'
 import Power from './components/power'
+import {
+    getBrightness,
+    getVolume,
+    setBrightness,
+    setVolume,
+} from './providers/cmd'
 
 const App = ({ onChangeTheme }) => {
+    const [canBrightness, setCanBrightness] = useState(false)
+    const [brightness, setBrightnessValue] = useState(0)
+    const [canSound, setCanSound] = useState(false)
+    const [volume, setVolumeValue] = useState(0)
+
+    const handleChangeBrightness = (v) => {
+        console.log('handleChangeBrightness', v)
+        setBrightness(v).then(console.log).catch(console.error)
+    }
+
+    const handleChangeVolume = (v) => {
+        console.log('handleChangeVolume', v)
+        setVolume(v).then(console.log).catch(console.error)
+    }
+
+    useEffect(() => {
+        console.log('useEffect')
+        getBrightness()
+            .then((level) => {
+                level = level.match(/\d+/)[0]
+                console.log('getBrightness', level)
+                setCanBrightness(true)
+                setBrightnessValue(parseInt(level))
+            })
+            .catch((err) => {
+                console.log(err)
+                setCanBrightness(false)
+            })
+
+        getVolume()
+            .then((level) => {
+                level = level.match(/\d+/)[0]
+                console.log('getVolume', level)
+                setCanSound(true)
+                setVolumeValue(level)
+            })
+            .catch((err) => {
+                console.log(err)
+                setCanSound(false)
+            })
+
+        return () => {}
+    }, [])
+
     return (
         <Fragment>
             <Center>
@@ -48,23 +98,28 @@ const App = ({ onChangeTheme }) => {
                         <VStack>
                             <Box paddingTop='35px' paddingBottom='35px'>
                                 <VStack spacing={4}>
-                                    <SliderValue
-                                        value={80}
-                                        // onChangeValue={onChangeBrightness}
-                                        icon={<BsBrightnessHigh />}
-                                        min={0}
-                                        max={255}
-                                        readOnly={false}
-                                    />
-
-                                    <SliderValue
-                                        value={20}
-                                        // onChangeValue={onChangeVolume}
-                                        icon={<BsSoundwave />}
-                                        min={0}
-                                        max={100}
-                                        readOnly={false}
-                                    />
+                                    {canBrightness && (
+                                        <SliderValue
+                                            value={brightness}
+                                            onChangeValue={
+                                                handleChangeBrightness
+                                            }
+                                            icon={<BsBrightnessHigh />}
+                                            min={10}
+                                            max={100}
+                                            readOnly={false}
+                                        />
+                                    )}
+                                    {canSound && (
+                                        <SliderValue
+                                            value={volume}
+                                            onChangeValue={handleChangeVolume}
+                                            icon={<BsSoundwave />}
+                                            min={0}
+                                            max={100}
+                                            readOnly={false}
+                                        />
+                                    )}
                                 </VStack>
                             </Box>
                             <HStack spacing={10}>
