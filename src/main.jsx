@@ -10,13 +10,7 @@ import {
     Stack,
     VStack,
 } from '@chakra-ui/react'
-import {
-    catpuccinMorning,
-    dark,
-    light,
-    nord,
-    rosePine,
-} from './providers/themes'
+import { dark, light } from './providers/themes'
 import Clock from './components/clock'
 import SliderValue from './components/slider'
 import ThemeSelect from './components/themeselect'
