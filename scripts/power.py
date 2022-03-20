@@ -47,8 +47,6 @@ def show_dialog(msg):
         fw.close()
     return value
 
-print(show_dialog("shutdown"))
-
 if len(args) == 0:
     # print usage
     sys.exit(1)
