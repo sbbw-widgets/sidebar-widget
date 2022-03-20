@@ -1,3 +1,4 @@
 psutil
 screeninfo
 screen-brightness-control
+PySimpleGUI

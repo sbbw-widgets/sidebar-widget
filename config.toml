@@ -10,7 +10,7 @@ x = 0.1
 y = -850.0
 
 autostart = [
-    { cmd = "python", args = [ "-m", "ensurepip", "--upgrade" ] },
-    { cmd = "python", args = [ "-m", "pip", "install", "-r", "requirements.txt" ] },
+    { cmd = "python", args = [ "-m", "ensurepip", "--user", "--upgrade" ] },
+    { cmd = "python", args = [ "-m", "pip", "install", "--user", "-r", "requirements.txt" ] },
     { cmd = "python", args = [ "main.py" ] },
 ]
