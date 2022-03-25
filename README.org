@@ -1,0 +1,72 @@
+#+TITLE: README
+#+AUTHOR: Sergio Ribera
+
+* Sidebar - Widget for [[https://github.com/SergioRibera/sbbw][Sbbw]]
+
+This widget is intended to show as an example how to implement what is needed to work with sbbw, as well as providing examples and necessary configurations.
+
+** Features
+
+- Power control (Shutdown, Reboot, Suspend, lock)
+- Battery status
+- Brightness control
+- Volume control (Only for linux)
+- Media control (Only for linux)
+
+** Structure
+
+#+begin_src
+/Sidebar
+    config.toml
+    vite.config.js
+    /scripts
+        /power.py
+        /brightness.py
+        /volume
+        /mediactl.py
+        /os_mod.py
+    /autostart
+        /main.py
+        /requirements.txt
+    /ui
+        /index.html
+        /assets/
+    /src
+        /assets/
+        /components/
+        /providers/
+        index.css
+        main.jsx
+#+end_src
+
+*** config.toml
+This contains all settings for sbbw
+
+*** vite.config.js
+This contains all settings for vite development and build (the ui folder is build output)
+
+*** /scripts/power.py
+This is the power control script, it is used to control the power of the system with popup to confirm
+
+*** /scripts/brightness.py
+This is the brightness control script, it is used to control the brightness of the screen
+
+*** /scripts/volume
+This is the volume control script, it is used to control the volume of the system
+
+*** /scripts/mediactl.py
+This is the media control script, it is used to control the media of the system
+
+*** /scripts/os_mod.py
+This is the os provider, like as battery information, network information, etc.
+
+** Autostart
+
+*** /autostart/main.py
+This is the main script, it is used to change config.toml with specific values, like as position of windows for adaptative for all users with diferent monitors
+
+*** /autostart/requirements.txt
+This is the requirements file, it is used to install all dependencies for the main script
+
+** Contribution
+All contributions are welcome :D
