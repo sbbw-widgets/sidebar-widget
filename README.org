@@ -2,6 +2,7 @@
 #+AUTHOR: Sergio Ribera
 
 * Sidebar - Widget for [[https://github.com/SergioRibera/sbbw][Sbbw]]
+[[file:preview.png]]
 
 This widget is intended to show as an example how to implement what is needed to work with sbbw, as well as providing examples and necessary configurations.
 
