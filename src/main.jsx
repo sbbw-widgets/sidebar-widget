@@ -10,14 +10,12 @@ import {
     Stack,
     VStack,
 } from '@chakra-ui/react'
-import { dark, light } from './providers/themes'
+import { dark } from './providers/themes'
 import Clock from './components/clock'
 import SliderValue from './components/slider'
-import ThemeSelect from './components/themeselect'
 import MediaCtl from './components/mediactl'
 import { BsBrightnessHigh, BsSoundwave } from 'react-icons/bs'
 import Battery from './components/battery'
-import Network from './components/network'
 import Power from './components/power'
 import {
     getBrightness,
@@ -26,7 +24,7 @@ import {
     setVolume,
 } from './providers/cmd'
 
-const App = ({ onChangeTheme }) => {
+const App = () => {
     const [canBrightness, setCanBrightness] = useState(false)
     const [brightness, setBrightnessValue] = useState(0)
     const [canSound, setCanSound] = useState(false)
@@ -85,7 +83,6 @@ const App = ({ onChangeTheme }) => {
                 >
                     <Stack mb={7} spacing={4}>
                         <Clock />
-                        <ThemeSelect onChangeTheme={onChangeTheme} />
                     </Stack>
                     <MediaCtl />
                     <VStack height='100%' justifyContent='space-between'>
@@ -118,7 +115,6 @@ const App = ({ onChangeTheme }) => {
                             </Box>
                             <HStack spacing={10}>
                                 <Battery />
-                                <Network />
                             </HStack>
                         </VStack>
                         <HStack py={20}>
@@ -132,12 +128,10 @@ const App = ({ onChangeTheme }) => {
 }
 
 const AppTheming = () => {
-    const [theme, _setTheme] = useState(nord)
-
     return (
-        <ChakraProvider resetCSS width='100vw' height='100vh' theme={theme}>
+        <ChakraProvider resetCSS width='100vw' height='100vh' theme={dark}>
             <Slide direction='left' in mountOnEnter unmountOnExit>
-                <App onChangeTheme={(_t) => {}} />
+                <App />
             </Slide>
         </ChakraProvider>
     )

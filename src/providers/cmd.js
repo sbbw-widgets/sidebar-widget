@@ -1,3 +1,5 @@
+import { getMainBattery as getBattery } from '@sbbw/api/bat'
+
 const exec = ({ file, args }) => {
     return new Promise((resolve, reject) => {
         window.rpc
@@ -97,28 +99,6 @@ const setVolume = (volume) => {
     })
 }
 
-const getBattery = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./os_mod.py', 'bat', 'get'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const getBatteryStatus = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./os_mod.py', 'bat'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
 // Get name  of wifi network connected
 const getNetworkSSID = () => {
     return new Promise((resolve, reject) => {
@@ -184,7 +164,6 @@ export {
     getMediaMetadata,
     setMedia,
     getBattery,
-    getBatteryStatus,
     getNetworkSSID,
     setShutdownDevice,
     setRebootDevice,

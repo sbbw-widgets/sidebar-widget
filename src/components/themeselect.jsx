@@ -1,6 +1,6 @@
 import { Center, Icon, Stack, theme } from '@chakra-ui/react'
 import { Fragment, useState } from 'react'
-import { light, dark, nord } from '../providers/themes'
+import { light, dark } from '../providers/themes'
 
 const CircleIcon = (props) => (
     <Icon viewBox='0 0 200 200' {...props} style={{ cursor: 'pointer' }}>
@@ -14,7 +14,6 @@ const CircleIcon = (props) => (
 const themes = [
     { name: 'light', color: '#fafaf', theme: light },
     { name: 'dark', color: '#1f2530', theme: dark },
-    { name: 'nord', color: '#4C566A', theme: nord },
     { name: 'catpuccin-morning', color: '#f2cdcd', theme },
     { name: 'rose-pine', color: '#c4a7a7', theme },
 ]
@@ -23,7 +22,7 @@ const themes = [
 const ThemeSelect = ({ onChangeTheme }) => {
     if (onChangeTheme)
         onChangeTheme(
-            JSON.parse(localStorage.getItem('theme')) || themes[0].theme
+            JSON.parse(localStorage.getItem('theme')) || themes[1].theme
         )
 
     const handleChange = (t) => {
