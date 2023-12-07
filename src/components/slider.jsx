@@ -10,9 +10,8 @@ import {
 import { Fragment, useState } from 'react'
 
 const SliderValue = ({ icon, min, max, value, readOnly, onChangeValue }) => {
-    const [valueSlider, setValueSlider] = useState(value)
     const handleChange = (v) => {
-        setValueSlider(v)
+        console.log(v)
         if (onChangeValue) onChangeValue(v)
     }
 
@@ -39,7 +38,7 @@ const SliderValue = ({ icon, min, max, value, readOnly, onChangeValue }) => {
                     onChange={handleChange}
                     min={min}
                     max={max}
-                    value={valueSlider}
+                    value={value}
                 >
                     <SliderTrack bg='primary'>
                         <SliderFilledTrack bg='highlight' />

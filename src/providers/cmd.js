@@ -1,4 +1,13 @@
 import { getMainBattery as getBattery } from '@sbbw/api/bat'
+import {
+    isPlayerActive,
+    getVolume,
+    setVolume,
+    getState,
+    setNext,
+    setPrev,
+    setPlayPause,
+} from '@sbbw/api/media'
 
 const exec = ({ file, args }) => {
     return new Promise((resolve, reject) => {
@@ -18,95 +27,6 @@ const exec = ({ file, args }) => {
                     else reject(data)
                 }
             })
-            .catch(reject)
-    })
-}
-
-const getBrightness = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./brightness.py', 'get'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const getVolume = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: './volume',
-            args: ['get'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const getMediaStatus = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./mediactl.py', 'status'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const getMediaMetadata = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./mediactl.py', 'metadata'],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const setMedia = (cmd) => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./mediactl.py', cmd],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const setBrightness = (brightness) => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./brightness.py', 'set', `${brightness}`],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-const setVolume = (volume) => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: './volume',
-            args: ['set', `${volume}`],
-        })
-            .then(resolve)
-            .catch(reject)
-    })
-}
-
-// Get name  of wifi network connected
-const getNetworkSSID = () => {
-    return new Promise((resolve, reject) => {
-        exec({
-            file: 'python',
-            args: ['./os_mod.py', 'net', 'get'],
-        })
-            .then(resolve)
             .catch(reject)
     })
 }
@@ -156,15 +76,14 @@ const setLookScreenDevice = () => {
 }
 
 export {
-    getVolume,
-    getBrightness,
-    setBrightness,
-    setVolume,
-    getMediaStatus,
-    getMediaMetadata,
-    setMedia,
     getBattery,
-    getNetworkSSID,
+    isPlayerActive,
+    getVolume,
+    setVolume,
+    setNext,
+    setPrev,
+    setPlayPause,
+    getState,
     setShutdownDevice,
     setRebootDevice,
     setSuspendDevice,

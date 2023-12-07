@@ -17,54 +17,52 @@ import MediaCtl from './components/mediactl'
 import { BsBrightnessHigh, BsSoundwave } from 'react-icons/bs'
 import Battery from './components/battery'
 import Power from './components/power'
-import {
-    getBrightness,
-    getVolume,
-    setBrightness,
-    setVolume,
-} from './providers/cmd'
+import { getBrightness, setBrightness } from '@sbbw/api/brightness'
 
 const App = () => {
     const [canBrightness, setCanBrightness] = useState(false)
     const [brightness, setBrightnessValue] = useState(0)
-    const [canSound, setCanSound] = useState(false)
-    const [volume, setVolumeValue] = useState(0)
+    const [canSound, _setCanSound] = useState(false)
+    const [volume, _setVolumeValue] = useState(0.0)
 
     const handleChangeBrightness = (v) => {
         console.log('handleChangeBrightness', v)
-        setBrightness(v).then(console.log).catch(console.error)
+        // window.rpc.call("brightness.set_main", v)
+        setBrightness(v)
+            .then((data) => {
+                console.log(data)
+                setBrightnessValue(v)
+            })
+            .catch(console.log)
     }
 
     const handleChangeVolume = (v) => {
-        console.log('handleChangeVolume', v)
-        setVolume(v).then(console.log).catch(console.error)
+        console.log('handleChangeVolume', v / 100)
+        // setVolume(v / 100).then(console.log).catch(console.error)
     }
 
     useEffect(() => {
-        console.log('useEffect')
         getBrightness()
-            .then((level) => {
-                level = level.match(/\d+/)[0]
-                console.log('getBrightness', level)
+            .then((device) => {
+                console.log('getBrightness', device.value)
                 setCanBrightness(true)
-                setBrightnessValue(parseInt(level))
+                setBrightnessValue(device.value)
             })
             .catch((err) => {
-                console.log(err)
+                console.log('Get Brightness Error', err)
                 setCanBrightness(false)
             })
 
-        getVolume()
-            .then((level) => {
-                level = level.match(/\d+/)[0]
-                console.log('getVolume', level)
-                setCanSound(true)
-                setVolumeValue(level)
-            })
-            .catch((err) => {
-                console.log(err)
-                setCanSound(false)
-            })
+        // getVolume()
+        //     .then((level) => {
+        //         console.log('getVolume', level, level * 100)
+        //         setCanSound(true)
+        //         setVolumeValue(level * 100)
+        //     })
+        //     .catch((err) => {
+        //         console.log(err)
+        //         setCanSound(false)
+        //     })
 
         return () => {}
     }, [])

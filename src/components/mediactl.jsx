@@ -18,7 +18,13 @@ import Album from '../assets/album.png'
 
 import '../index.css'
 import { useEffect, useState } from 'react'
-import { getMediaMetadata, getMediaStatus, setMedia } from '../providers/cmd'
+import {
+    isPlayerActive,
+    setNext,
+    getState,
+    setPlayPause,
+    setPrev,
+} from '../providers/cmd'
 
 const CustomIconButton = ({ icon, onClick }) => {
     return (
@@ -35,14 +41,13 @@ const CustomIconButton = ({ icon, onClick }) => {
 }
 
 const MediaCtl = () => {
+    const [hasPlayer, setHasPlayer] = useState(false)
     const [isPlaying, setIsPlayingValue] = useState(false)
-    const [mediaMetadata, setMediaMetadata] = useState({
-        title: 'Not Playing Music',
-    })
+    const [mediaMetadata, setMediaMetadata] = useState(null)
 
     const handlePlayPause = () => {
         if (!isPlaying) {
-            setMedia('play')
+            setPlayPause(true)
                 .then(() => {
                     setIsPlayingValue(true)
                 })
@@ -51,7 +56,7 @@ const MediaCtl = () => {
                     console.log(err)
                 })
         } else {
-            setMedia('pause')
+            setPlayPause(false)
                 .then(() => {
                     setIsPlayingValue(false)
                 })
@@ -62,60 +67,53 @@ const MediaCtl = () => {
         }
     }
     const handleNext = () => {
-        setMedia('next')
-            .then(() => {
+        setNext()
+            .then((data) => {
+                console.log(data)
+                setMediaMetadata(data)
                 setIsPlayingValue(true)
             })
             .catch((err) => {
                 setIsPlayingValue(false)
+                setMediaMetadata(null)
                 console.log(err)
             })
     }
     const handlePrevious = () => {
-        setMedia('prev')
-            .then(() => {
+        setPrev()
+            .then((data) => {
+                console.log(data)
+                setMediaMetadata(data)
                 setIsPlayingValue(true)
             })
             .catch((err) => {
                 setIsPlayingValue(false)
+                setMediaMetadata(null)
                 console.log(err)
             })
     }
 
     useEffect(() => {
         const checkStatus = () => {
-            getMediaStatus()
-                .then((status) => {
-                    console.log('status', status)
-                    setIsPlayingValue(status.toLowerCase() == 'playing')
-                    if (status.toLowerCase() !== 'playing') {
-                        setMediaMetadata({ title: 'Not Playing Music' })
-                    } else {
-                        getMediaMetadata()
-                            .then((rawMetadata) => {
-                                console.log('raw metadata', rawMetadata)
-                                let metas = rawMetadata.split('\n')
-                                let title = ''
-                                console.log('metas', metas)
-                                for (let i = 0; i < metas.length; i++) {
-                                    if (metas[i].includes('xesam:title')) {
-                                        console.log(metas[i])
-                                        title = metas[i]
-                                            .split('xesam:title')[1]
-                                            .trim()
-                                    }
-                                }
-                                setMediaMetadata({ title })
+            isPlayerActive()
+                .then((active) => {
+                    setHasPlayer(active)
+                    if (active)
+                        getState()
+                            .then((data) => {
+                                setMediaMetadata(data)
                             })
-                            .catch(console.error)
-                    }
+                            .catch((e) => {
+                                console.log(e)
+                                setMediaMetadata(null)
+                            })
                 })
-                .catch((err) => {
-                    console.log('status', err)
-                    setMediaMetadata({ title: 'Not Playing Music' })
+                .catch((e) => {
+                    console.log(e)
+                    setHasPlayer(false)
                 })
         }
-        const interval = setInterval(() => checkStatus(), 10000)
+        const interval = setInterval(() => checkStatus(), 1000)
         checkStatus()
 
         return () => clearInterval(interval)
@@ -123,50 +121,52 @@ const MediaCtl = () => {
 
     return (
         <>
-            <Box pb='1.5rem'>
-                <HStack p='5' borderRadius='10px' background='primary'>
-                    <Image
-                        src={Album}
-                        htmlWidth='80px'
-                        htmlHeight='80px'
-                        borderRadius='10%'
-                        fallbackSrc={DefaultAlbum}
-                    />
-                    <VStack width='200px' overflow='hidden' spacing='2'>
-                        <Text
-                            className='media_name_animated'
-                            whiteSpace='nowrap'
-                            display='inline-flex'
-                            color='text'
-                            align='center'
-                        >
-                            {mediaMetadata.title}
-                        </Text>
-                        <Center>
-                            <HStack spacing={1}>
-                                <CustomIconButton
-                                    onClick={handlePrevious}
-                                    icon={<BsFillSkipBackwardFill />}
-                                />
-                                <CustomIconButton
-                                    onClick={handlePlayPause}
-                                    icon={
-                                        isPlaying ? (
-                                            <BsFillPauseFill />
-                                        ) : (
-                                            <BsFillPlayFill />
-                                        )
-                                    }
-                                />
-                                <CustomIconButton
-                                    onClick={handleNext}
-                                    icon={<BsFillSkipForwardFill />}
-                                />
-                            </HStack>
-                        </Center>
-                    </VStack>
-                </HStack>
-            </Box>
+            {hasPlayer && mediaMetadata && (
+                <Box pb='1.5rem'>
+                    <HStack p='5' borderRadius='10px' background='primary'>
+                        <Image
+                            src={mediaMetadata.metadata.art_url}
+                            htmlWidth='80px'
+                            htmlHeight='80px'
+                            borderRadius='10%'
+                            fallbackSrc={DefaultAlbum}
+                        />
+                        <VStack width='200px' overflow='hidden' spacing='2'>
+                            <Text
+                                className='media_name_animated'
+                                whiteSpace='nowrap'
+                                display='inline-flex'
+                                color='text'
+                                align='center'
+                            >
+                                {mediaMetadata.metadata.title}
+                            </Text>
+                            <Center>
+                                <HStack spacing={1}>
+                                    <CustomIconButton
+                                        onClick={handlePrevious}
+                                        icon={<BsFillSkipBackwardFill />}
+                                    />
+                                    <CustomIconButton
+                                        onClick={handlePlayPause}
+                                        icon={
+                                            isPlaying ? (
+                                                <BsFillPauseFill />
+                                            ) : (
+                                                <BsFillPlayFill />
+                                            )
+                                        }
+                                    />
+                                    <CustomIconButton
+                                        onClick={handleNext}
+                                        icon={<BsFillSkipForwardFill />}
+                                    />
+                                </HStack>
+                            </Center>
+                        </VStack>
+                    </HStack>
+                </Box>
+            )}
         </>
     )
 }
